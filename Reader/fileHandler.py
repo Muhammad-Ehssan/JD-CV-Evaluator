@@ -18,19 +18,24 @@ def handle_files(request_files):
     # Create the 'uploads' directory if it doesn't exist
     if not os.path.exists(os.path.join(UPLOAD_FOLDER)):
         os.makedirs(os.path.join(UPLOAD_FOLDER))
-
+    
     for file_type, files in request_files.items():
         folder_path = os.path.join(UPLOAD_FOLDER, file_type)
-
         # Create the folder if it doesn't exist
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
 
-        for file in files:
+        for index, file in enumerate(files):
             if file and allowed_file(file.filename):
-                filename = os.path.join(folder_path, file.filename)
+                path = file.filename.split("/")[-1]
+                filename = os.path.join(folder_path, path)
+                print(filename)
+
                 file.save(filename)
-                uploaded_files[file_type].append(file.filename)
+                uploaded_files[file_type].append(path)
+            else:
+                LOGGER.info("Invalid file format or File Doesnot Exist")
+
     LOGGER.info("All files saved successfully.")
     return uploaded_files['job_descriptions'], uploaded_files['resumes']
 

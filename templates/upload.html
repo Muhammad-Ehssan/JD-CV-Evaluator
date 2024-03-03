@@ -1,221 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>File Upload</title>
     <!-- Include Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 20px;
-        }
-        h2 {
-            color: #333;
-            background-color: #f8f9fa; /* Light gray background */
-            padding: 10px;
-            border-radius: 5px;
-            display: inline-block;
-        }
-        form {
-            margin-top: 20px;
-        }
-        .file-upload-btn {
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-        .file-upload-btn:hover {
-            background-color: #2980b9;
-        }
-        .file-list-container {
-            margin-top: 20px;
-        }
-        .file-list {
-            list-style: none;
-            padding: 0;
-        }
-        .file-list li {
-            margin-bottom: 5px;
-            color: #333;
-        }
-        .submit-btn {
-            background-color: #28a745;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .submit-btn:hover {
-            background-color: #218838;
-        }
-        .drop-area {
-            border: 2px dashed #3498db;
-            border-radius: 5px;
-            padding: 20px;
-            margin-top: 10px;
-        }
-        .drop-area.highlight {
-            background-color: #f0f8ff; /* Lighter blue background on highlight */
-        }
-        .error-message {
-            color: #dc3545; /* Bootstrap danger color */
-            margin-top: 10px;
-        }
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 20px;
+      }
+      h2 {
+        color: #333;
+        background-color: #f8f9fa; /* Light gray background */
+        padding: 10px;
+        border-radius: 5px;
+        display: inline-block;
+      }
+      form {
+        margin-top: 20px;
+      }
+      .file-upload-btn {
+        background-color: #3498db;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+      .file-upload-btn:hover {
+        background-color: #2980b9;
+      }
+      .file-list-container {
+        margin-top: 20px;
+      }
+      .file-list {
+        list-style: none;
+        padding: 0;
+      }
+      .file-list li {
+        margin-bottom: 5px;
+        color: #333;
+      }
+      .submit-btn {
+        background-color: #28a745;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .submit-btn:hover {
+        background-color: #218838;
+      }
+      .drop-area {
+        border: 2px dashed #3498db;
+        border-radius: 5px;
+        padding: 20px;
+        margin-top: 10px;
+      }
+      .drop-area.highlight {
+        background-color: #f0f8ff; /* Lighter blue background on highlight */
+      }
+      .error-message {
+        color: #dc3545; /* Bootstrap danger color */
+        margin-top: 10px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h2 class="mt-4">Upload Resumes</h2>
+      <h2 class="mt-4">Upload Resumes</h2>
 
-        <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form">
-            <div class="form-group">
-                <label for="doc-input" class="file-upload-btn btn btn-primary">Select or Drag & Drop Files</label>
-                <input type="file" name="resumes[]" multiple accept=".doc, .docx, .pdf" id="doc-input" class="d-none">
-                <ul class="file-list" id="doc-file-list"></ul>
-                <div class="drop-area" id="doc-drop-area">
-                    <p>Drag & Drop files here</p>
-                </div>
-            </div>
+      <form
+        action="/upload"
+        method="post"
+        enctype="multipart/form-data"
+        id="upload-form"
+      >
+        <div class="form-group">
+          <label for="doc-input" class="file-upload-btn btn btn-primary"
+            >Select a Folder</label
+          >
+          <input
+            type="file"
+            name="resumes[]"
+            multiple
+            accept=".doc, .docx, .pdf"
+            id="doc-input"
+            class="d-none"
+            webkitdirectory
+            mozdirectory
+          />
+          <ul class="file-list" id="doc-file-list"></ul>
+          <div class="drop-area" id="doc-drop-area">
+            <p>Drag & Drop files here</p>
+          </div>
+        </div>
 
-            <h2 class="mt-4">Upload Job Descriptions</h2>
+        <h2 class="mt-4">Upload Job Descriptions</h2>
 
-            <div class="form-group">
-                <label for="pdf-input" class="file-upload-btn btn btn-primary">Select or Drag & Drop Files</label>
-                <input type="file" name="job_descriptions[]" multiple accept=".doc, .docx, .pdf" id="pdf-input" class="d-none">
-                <ul class="file-list" id="pdf-file-list"></ul>
-                <div class="drop-area" id="pdf-drop-area">
-                    <p>Drag & Drop files here</p>
-                </div>
-            </div>
+        <div class="form-group">
+          <label for="pdf-input" class="file-upload-btn btn btn-primary"
+            >Select or Drag & Drop Files</label
+          >
+          <input
+            type="file"
+            name="job_descriptions[]"
+            multiple
+            accept=".doc, .docx, .pdf"
+            id="pdf-input"
+            class="d-none"
+          />
+          <ul class="file-list" id="pdf-file-list"></ul>
+          <div class="drop-area" id="pdf-drop-area">
+            <p>Drag & Drop files here</p>
+          </div>
+        </div>
 
-            <div class="error-message" id="error-message" style="display:none;"></div>
+        <div
+          class="error-message"
+          id="error-message"
+          style="display: none"
+        ></div>
 
-            <button type="button" class="submit-btn btn btn-success mt-3" onclick="validateAndUpload()">Compute Result</button>
-        </form>
+        <button
+          type="button"
+          class="submit-btn btn btn-success mt-3"
+          onclick="validateAndUpload()"
+        >
+          Compute Result
+        </button>
+      </form>
 
-        <script>
-            function updateFileList(inputId, listId) {
-                var fileList = document.getElementById(inputId).files;
-                var fileListContainer = document.getElementById(listId);
+      <script>
+        function updateFileList(inputId, listId) {
+          var fileList = document.getElementById(inputId).files;
+          var fileListContainer = document.getElementById(listId);
 
-                for (var i = 0; i < fileList.length; i++) {
-                    var listItem = document.createElement('li');
-                    listItem.textContent = fileList[i].name;
-                    fileListContainer.appendChild(listItem);
-                }
+          for (var i = 0; i < fileList.length; i++) {
+            var listItem = document.createElement("li");
+            listItem.textContent = fileList[i].name;
+            fileListContainer.appendChild(listItem);
+          }
 
-                // Show the submit button when files are selected
-                document.getElementById('upload-form').querySelector('.submit-btn').style.display =
-                    (document.getElementById('doc-input').files.length > 0 || document.getElementById('pdf-input').files.length > 0) ?
-                    'block' :
-                    'none';
+          // Show the submit button when files are selected
+          document
+            .getElementById("upload-form")
+            .querySelector(".submit-btn").style.display =
+            document.getElementById("doc-input").files.length > 0 ||
+            document.getElementById("pdf-input").files.length > 0
+              ? "block"
+              : "none";
+        }
+
+        function validateAndUpload() {
+          var docFiles = document.getElementById("doc-input").files;
+          var pdfFiles = document.getElementById("pdf-input").files;
+
+          var errorMessage = document.getElementById("error-message");
+
+          if (docFiles.length === 0 && pdfFiles.length === 0) {
+            // Display error message if both types of files are missing
+            errorMessage.textContent =
+              "Missing mandatory fields: Upload at least one resume or one job description file.";
+            errorMessage.style.display = "block";
+            return;
+          }
+
+          if (docFiles.length === 0) {
+            // Display error message if resumes are missing
+            errorMessage.textContent =
+              "Missing mandatory field: Upload at least one resume.";
+            errorMessage.style.display = "block";
+            return;
+          }
+
+          if (pdfFiles.length === 0) {
+            // Display error message if job descriptions are missing
+            errorMessage.textContent =
+              "Missing mandatory field: Upload at least one job description.";
+            errorMessage.style.display = "block";
+            return;
+          }
+
+          // Reset error message and proceed with file upload
+          errorMessage.style.display = "none";
+
+          // Trigger form submission
+          document.getElementById("upload-form").submit();
+        }
+
+        function preventDefaults(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        function highlightDropArea(dropAreaId) {
+          document.getElementById(dropAreaId).classList.add("highlight");
+        }
+
+        function unhighlightDropArea(dropAreaId) {
+          document.getElementById(dropAreaId).classList.remove("highlight");
+        }
+
+        function handleDrop(e, inputId, listId, dropAreaId) {
+          var dt = e.dataTransfer;
+          var files = dt.files;
+
+          document.getElementById(inputId).files = files;
+          console.log(files);
+          updateFileList(inputId, listId);
+          unhighlightDropArea(dropAreaId);
+        }
+
+        function initDropArea(inputId, listId, dropAreaId) {
+          var dropArea = document.getElementById(dropAreaId);
+
+          ["dragenter", "dragover", "dragleave", "drop"].forEach(
+            (eventName) => {
+              dropArea.addEventListener(eventName, preventDefaults, false);
             }
+          );
 
-            function validateAndUpload() {
-                var docFiles = document.getElementById('doc-input').files;
-                var pdfFiles = document.getElementById('pdf-input').files;
+          ["dragenter", "dragover"].forEach((eventName) => {
+            dropArea.addEventListener(
+              eventName,
+              function () {
+                highlightDropArea(dropAreaId);
+              },
+              false
+            );
+          });
 
-                var errorMessage = document.getElementById('error-message');
-
-                if (docFiles.length === 0 && pdfFiles.length === 0) {
-                    // Display error message if both types of files are missing
-                    errorMessage.textContent = 'Missing mandatory fields: Upload at least one resume or one job description file.';
-                    errorMessage.style.display = 'block';
-                    return;
-                }
-
-                if (docFiles.length === 0) {
-                    // Display error message if resumes are missing
-                    errorMessage.textContent = 'Missing mandatory field: Upload at least one resume.';
-                    errorMessage.style.display = 'block';
-                    return;
-                }
-
-                if (pdfFiles.length === 0) {
-                    // Display error message if job descriptions are missing
-                    errorMessage.textContent = 'Missing mandatory field: Upload at least one job description.';
-                    errorMessage.style.display = 'block';
-                    return;
-                }
-
-                // Reset error message and proceed with file upload
-                errorMessage.style.display = 'none';
-
-                // Trigger form submission
-                document.getElementById('upload-form').submit();
-            }
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            function highlightDropArea(dropAreaId) {
-                document.getElementById(dropAreaId).classList.add('highlight');
-            }
-
-            function unhighlightDropArea(dropAreaId) {
-                document.getElementById(dropAreaId).classList.remove('highlight');
-            }
-
-            function handleDrop(e, inputId, listId, dropAreaId) {
-                var dt = e.dataTransfer;
-                var files = dt.files;
-
-                document.getElementById(inputId).files = files;
-
-                updateFileList(inputId, listId);
+          ["dragleave", "drop"].forEach((eventName) => {
+            dropArea.addEventListener(
+              eventName,
+              function () {
                 unhighlightDropArea(dropAreaId);
-            }
+              },
+              false
+            );
+          });
 
-            function initDropArea(inputId, listId, dropAreaId) {
-                var dropArea = document.getElementById(dropAreaId);
+          dropArea.addEventListener("drop", function (e) {
+            handleDrop(e, inputId, listId, dropAreaId);
+          });
+        }
 
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                    dropArea.addEventListener(eventName, preventDefaults, false);
-                });
+        document
+          .getElementById("doc-input")
+          .addEventListener("change", function () {
+            updateFileList("doc-input", "doc-file-list");
+          });
 
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    dropArea.addEventListener(eventName, function () {
-                        highlightDropArea(dropAreaId);
-                    }, false);
-                });
+        document
+          .getElementById("pdf-input")
+          .addEventListener("change", function () {
+            updateFileList("pdf-input", "pdf-file-list");
+          });
 
-                ['dragleave', 'drop'].forEach(eventName => {
-                    dropArea.addEventListener(eventName, function () {
-                        unhighlightDropArea(dropAreaId);
-                    }, false);
-                });
-
-                dropArea.addEventListener('drop', function (e) {
-                    handleDrop(e, inputId, listId, dropAreaId);
-                });
-            }
-
-            document.getElementById('doc-input').addEventListener('change', function () {
-                updateFileList('doc-input', 'doc-file-list');
-            });
-
-            document.getElementById('pdf-input').addEventListener('change', function () {
-                updateFileList('pdf-input', 'pdf-file-list');
-            });
-
-            initDropArea('doc-input', 'doc-file-list', 'doc-drop-area');
-            initDropArea('pdf-input', 'pdf-file-list', 'pdf-drop-area');
-        </script>
+        initDropArea("doc-input", "doc-file-list", "doc-drop-area");
+        initDropArea("pdf-input", "pdf-file-list", "pdf-drop-area");
+      </script>
     </div>
 
     <!-- Include Bootstrap JS and Popper.js -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+  </body>
 </html>

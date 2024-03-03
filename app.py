@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template,jsonify, request, send_file
 from Reader.fileHandler import handle_files, delete_files_in_folder
 from Mixtral.mixtral import calculate_score
 from Mixtral.messageMaker import create_evaluation_message,extract_text
@@ -30,26 +30,33 @@ def index():
 def upload():
     messages_list=[]
     file_types = ['resumes', 'job_descriptions']
-    delete_files_in_folder("./ResultFiles/")
     request_files = {file_type: request.files.getlist(file_type + '[]') for file_type in file_types}
-    job_desc_paths, resume_paths  = handle_files(request_files)
-    extracted_JD = extract_text("./"+ UPLOAD_FOLDER +"/job_descriptions/"+job_desc_paths[0])
-    for path in resume_paths:
-        extracted_resume = extract_text("./"+ UPLOAD_FOLDER +"/resumes/"+path)
-        message = create_evaluation_message(extracted_resume,extracted_JD)
-        messages_list.append(message)
+    if not request_files['resumes'] or not request_files['job_descriptions']:
+        response = {
+            'error': 'Invalid request',
+            'message': 'Both "resumes" and "job_descriptions" must be non-empty lists.'
+        }
+        return jsonify(response), 400 
+    else:
+        delete_files_in_folder("./ResultFiles/")
+        job_desc_paths, resume_paths  = handle_files(request_files)
+        extracted_JD = extract_text("./"+ UPLOAD_FOLDER +"/job_descriptions/"+job_desc_paths[0])
+        for path in resume_paths:
+            extracted_resume = extract_text("./"+ UPLOAD_FOLDER +"/resumes/"+path)
+            message = create_evaluation_message(extracted_resume,extracted_JD)
+            messages_list.append({'message':message,'filename':path.split("/")[-1]})
 
-        # Create a ThreadPoolExecutor
-    with ThreadPoolExecutor(max_workers=len(messages_list)) as executor:
-        # Submit the tasks to the executor
-        completion_futures = [executor.submit(calculate_score, message,index) for index,message in enumerate(messages_list)]
-    # Retrieve the results
-    results = [future.result() for future in completion_futures]
-    csv_filename , path = add_to_csv(results)
-    delete_files_in_folder("./"+ UPLOAD_FOLDER+"/job_descriptions")
-    delete_files_in_folder("./"+ UPLOAD_FOLDER+"/resumes")
+            # Create a ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=len(messages_list)) as executor:
+            # Submit the tasks to the executor
+            completion_futures = [executor.submit(calculate_score, message,index) for index,message in enumerate(messages_list)]
+        # Retrieve the results
+        results = [future.result() for future in completion_futures]
+        csv_filename , path = add_to_csv(results)
+        delete_files_in_folder("./"+ UPLOAD_FOLDER+"/job_descriptions")
+        delete_files_in_folder("./"+ UPLOAD_FOLDER+"/resumes")
 
-    return send_file(path, as_attachment=True, download_name=csv_filename)
+        return send_file(path, as_attachment=True, download_name=csv_filename)
 
 
 

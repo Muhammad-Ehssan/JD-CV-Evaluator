@@ -15,7 +15,7 @@ env/
 
 
 # Ignore log files
-*.log
+*.log*
 
 # Ignore IDE and editor-specific files
 .vscode/

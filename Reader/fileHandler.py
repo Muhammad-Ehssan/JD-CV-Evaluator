@@ -29,8 +29,6 @@ def handle_files(request_files):
             if file and allowed_file(file.filename):
                 path = file.filename.split("/")[-1]
                 filename = os.path.join(folder_path, path)
-                print(filename)
-
                 file.save(filename)
                 uploaded_files[file_type].append(path)
             else:
